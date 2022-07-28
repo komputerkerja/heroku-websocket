@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket.IO</title>
+</head>
+<body>
+    <p>Open : <%= port %> </p>
+    <div class="input">
+        <input type="text" id="message">
+        <input type="button" id="send" value="Send">
+    </div>
+    <textarea id="chats"></textarea>
+    
+<script src="./socket.io/socket.io.js"></script>
+<script>
+    const socket = io()
+    const message = document.getElementById('message')
+    const send = document.getElementById('send')
+    const chats = document.getElementById('chats')
+    send.onclick = e => socket.emit('message', (message.value!="") ? message.value : "[No Comment]")
+    socket.on('connect', () => console.log('connected'))
+    socket.on('message', (msg) => {
+        const allChats = msg + "\n" + chats.value
+        chats.value = allChats
+    })
+</script>
+</body>
+</html>

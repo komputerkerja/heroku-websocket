@@ -1,12 +1,26 @@
 const express = require('express')
 const app = express()
+const ejsLayouts  =require('express-ejs-layouts')
 const server = require('http').Server(app)
 const socketIO = require('socket.io')
-const io = socketIO(server)
+const io = socketIO(server) 
 const PORT = process.env.PORT || 5000
 
-app.get('/', (req,res) => res.end(`<h1>port open in ${PORT}</h1>`))
+app.set('view engine', 'ejs')
+app.use(ejsLayouts)
+app.use(express.static('public'))
 
-io.on('connection', socket => socket.on('message', msg => io.emit('message', msg)))
+app.get('/', (req,res) => {
+  res.render('home', {
+    port: PORT
+  })
+})
+
+io.on('connection', socket => {
+  console.log(`client connected id:${socket.id}`)
+  socket.on('message', data => {
+    socket.emit('message', data);
+  })
+})
 
 server.listen(PORT, () => console.log(`http://localhost:${PORT}`))
