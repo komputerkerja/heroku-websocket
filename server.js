@@ -19,6 +19,7 @@ app.get('/', (req,res) => {
 io.on('connection', socket => {
   console.log(`client connected id:${socket.id}`)
   socket.on('message', data => {
+    console.log(data)
     socket.emit('message', data);
   })
 })
