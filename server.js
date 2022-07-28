@@ -15,12 +15,15 @@ app.get('/', (req,res) => {
     port: PORT
   })
 })
+app.get('/port', (req,res) => {
+  res.json({"port": `${PORT}`})
+})
 
 io.on('connection', socket => {
   console.log(`client connected id:${socket.id}`)
   socket.on('message', data => {
     console.log(data)
-    socket.emit('message', data);
+    io.emit('message', data);
   })
 })
 
