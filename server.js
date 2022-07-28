@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const app = express()
 const ejsLayouts  =require('express-ejs-layouts')
 const server = require('http').Server(app)
@@ -9,6 +10,7 @@ const PORT = process.env.PORT || 5000
 app.set('view engine', 'ejs')
 app.use(ejsLayouts)
 app.use(express.static('public'))
+app.use(cors())
 
 app.get('/', (req,res) => {
   res.render('home', {
